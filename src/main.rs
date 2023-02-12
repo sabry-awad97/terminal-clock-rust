@@ -1,14 +1,14 @@
+use chrono::Local;
 use crossterm::{
     style::{self, Color, Stylize},
     terminal::{Clear, ClearType},
 };
-use std::io::{stdout, Write};
-use std::time::Duration;
+use std::{thread, time};
 
-const DELAY: Duration = Duration::from_secs(1);
+const DELAY: time::Duration = time::Duration::from_secs(1);
 
 fn get_time() -> String {
-    let now = chrono::Local::now();
+    let now = Local::now();
     let hours = now.format("%H").to_string();
     let minutes = now.format("%M").to_string();
     let seconds = now.format("%S").to_string();
@@ -23,15 +23,12 @@ fn get_time() -> String {
 
 fn render() {
     print!("{}", Clear(ClearType::All));
-
-    let mut stdout = stdout();
     println!("{}", get_time());
-    stdout.flush().unwrap();
 }
 
 fn main() {
     loop {
         render();
-        std::thread::sleep(DELAY);
+        thread::sleep(DELAY);
     }
 }
